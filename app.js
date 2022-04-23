@@ -1,11 +1,12 @@
 const express = require('express');
+const cors = require("cors")
 const app = express();
 
-const port = 3000
+const port = 3001
 
 
 /* middlewares */
-
+app.use(cors());
 app.use(express.json());
 
 /* app.use((req, res , next) => {
@@ -23,16 +24,16 @@ app.use((req, res , next) => {
 /* get , post , put , delete */
 
 let todos = [
-  { id: 1, name: "sehri" },
-  { id: 2, name: "namaz" },
-  { id: 3, name: "dahi lani hai" },
-  { id: 4, name: "aftari" },
+    { id: 1, name: "sehri" },
+    { id: 2, name: "namaz" },
+    { id: 3, name: "dahi lani hai" },
+    { id: 4, name: "aftari" },
 ];
 
 // TODO CRUD
 
 /* get all data */
-app.get('/todo' , (req , res) => {
+app.get('/todo', (req, res) => {
 
     try {
         res.status(200).json({
@@ -48,14 +49,14 @@ app.get('/todo' , (req , res) => {
 });
 
 /* get detail */
-app.get('/todo/:id' , (req , res) => {
+app.get('/todo/:id', (req, res) => {
     const params = req.params // {id: 2}
     let id = params.id;
 
     const result = todos.find(x => x.id == id);
 
-    if(!result) {
-       return res.status(400).json({
+    if (!result) {
+        return res.status(400).json({
             data: null,
             message: 'record not found'
         })
@@ -66,11 +67,11 @@ app.get('/todo/:id' , (req , res) => {
 })
 
 /* add data */
-app.post('/todo' , (req , res) => {
+app.post('/todo', (req, res) => {
     const body = req.body // 
 
     todos.push(body);
-   
+
     res.status(200).json({
         data: body
     })
@@ -78,7 +79,7 @@ app.post('/todo' , (req , res) => {
 
 
 /* edit data */
-app.put('/todo/:id' , (req , res) => {
+app.put('/todo/:id', (req, res) => {
     const body = req.body;
     const params = req.params;
     const id = params.id;
@@ -97,19 +98,19 @@ app.put('/todo/:id' , (req , res) => {
     const index = todos.findIndex(x => x.id == id);
     todos[index] = result;
 
-   
+
     res.status(200).json({
         data: result
     })
 })
 
 /* delete data */
-app.delete('/todo/:id' , (req , res) => {
+app.delete('/todo/:id', (req, res) => {
     const params = req.params;
     const id = params.id
 
     todos.filter(x => x.id != id)
-   
+
     res.status(200).json({
         data: true
     })
@@ -131,5 +132,5 @@ app.delete('/todo/:id' , (req , res) => {
 /* server listen */
 
 app.listen(port, () => {
-  console.log(`app listening on port ${port}`)
+    console.log(`app listening on port ${port}`)
 })
